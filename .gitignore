@@ -1,0 +1,10 @@
+# Dependencies
+.next/
+node_modules/
+package-lock.json
+
+# Environment variables
+.env.local
+
+# Reports
+reports/
