@@ -7,10 +7,7 @@ import Button from '../Button'
 import { isEmail, isExists } from '../../utils/forms'
 
 export default function LoginForm({ isLoading, onClick }: ILoginFormProps) {
-  const [formData, setFormData] = useState({
-    email: 'test@email.com',
-    password: 'SuperSecretPassword!'
-  } as ILoginFields)
+  const [formData, setFormData] = useState({} as ILoginFields)
   const [errors, setErrors] = useState({} as Record<string, string>)
 
   const onChangeFormHandler = (type: TLoginFields, value: string) => {
