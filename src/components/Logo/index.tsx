@@ -1,9 +1,9 @@
 import tw, { styled } from 'twin.macro'
-import { IIconContainerProps, IPokeballProps, ITitleProps } from '@interfaces'
+import { IIconContainerProps, ILogoProps, ITitleProps } from '@interfaces'
 
-export default function Pokeball({ direction, theme }: IPokeballProps) {
+export default function Logo({ direction, theme }: ILogoProps) {
   return (
-    <IconContainer $direction={direction}>
+    <IconContainer role='group' $direction={direction}>
       <Icon src='/icons/icon-pokeball.svg' alt='Pokeball' />
       <Title $theme={theme}>POKEDEX</Title>
     </IconContainer>

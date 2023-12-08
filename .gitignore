@@ -1,5 +1,6 @@
 # Dependencies
 .next/
+.swc/
 node_modules/
 package-lock.json
 
@@ -8,3 +9,6 @@ package-lock.json
 
 # Reports
 reports/
+
+# Others
+.DS_Store

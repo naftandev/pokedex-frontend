@@ -1,16 +1,17 @@
-import tw from 'twin.macro'
-import { AvatarMenu, Pokeball } from '@components'
-import { IHeaderProps } from '@interfaces'
 import Link from 'next/link'
+import tw from 'twin.macro'
+import { IHeaderProps } from '@interfaces'
+import Logo from '../Logo'
+import AvatarMenu from '../AvatarMenu'
 
 export default function Header({ user, options }: IHeaderProps) {
   return (
     <Container>
-      <Link href='/dashboard'>
-        <Pokeball direction='row' theme='light' />
+      <Link href='/dashboard' data-cy='logo-link'>
+        <Logo direction='row' theme='light' />
       </Link>
       <ProfileContainer>
-        <UserName>Welcome, {user.name}!</UserName>
+        <UserName data-cy='header-user-name'>Welcome, {user.name}!</UserName>
         <AvatarMenu
           avatar={user.avatar}
           name={user.name}

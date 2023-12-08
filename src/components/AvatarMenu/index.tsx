@@ -14,13 +14,13 @@ export default function AvatarMenu({ name, avatar, options }: IAvatarMenuProps) 
 
   return (
     <Container>
-      <AvatarContainer onClick={toggleMenu}>
+      <AvatarContainer data-cy='avatar' role='button' onClick={toggleMenu}>
         <Avatar src={avatar} alt={name} />
       </AvatarContainer>
       {options.length && isOpenMenu ? (
-        <Menu>
+        <Menu role='menu' data-cy='avatar-menu'>
           {options.map(({ id, label, onClick }) => (
-            <MenuItem key={id} onClick={() => menuOptionHandler(onClick)}>
+            <MenuItem key={id} data-cy={`avatar-menuitem-${id}`} role='menuitem' onClick={() => menuOptionHandler(onClick)}>
               <MenuItemText>{label}</MenuItemText>
             </MenuItem>
           ))}

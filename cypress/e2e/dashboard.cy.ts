@@ -1,8 +1,10 @@
+import { APP_URL } from '../utils'
+
 describe('Dashboard Page', () => {
   const delay = 1500
 
   const login = () => {
-    const email = 'me@naftan.dev'
+    const email = 'test@email.com'
     const password = 'SuperSecretPassword!'
 
     // Type email and password
@@ -17,7 +19,7 @@ describe('Dashboard Page', () => {
   }
 
   beforeEach(() => {
-    cy.visit('http://localhost:3000/dashboard')
+    cy.visit(`${APP_URL}/dashboard`)
   })
 
   it('should redirect to login page if is not login', () => {
@@ -28,118 +30,125 @@ describe('Dashboard Page', () => {
 
   it('should redirect to dashboard page when login', () => {
     login()
+    cy.wait(delay)
 
     // Check welcome message
-    const welcomeMsg = cy.get('.Header__UserName-sc-8l6c1k-2')
+    const welcomeMsg = cy.get('[data-cy="header-user-name"]')
     welcomeMsg.should('contain.text', 'Welcome')
   })
 
   it('should load firt page with 10 pokemons', () => {
     login()
+    cy.wait(delay)
 
     // Count the pokemon cards
-    const pokemonsContainer = cy.get('.dashboard__CardsContainer-sc-1460e03-1')
-    pokemonsContainer.find('.PokemonCard__Container-sc-1gk3ur4-0').should('have.length', 10)
+    const pokemonsContainer = cy.get('[data-cy="cards-container"]')
+    pokemonsContainer.find('[data-cy="pokemon-card"]').should('have.length', 10)
   })
 
   it('should have 10 navigation buttons', () => {
     login()
+    cy.wait(delay)
 
     // Count the navigation buttons
-    const pagination = cy.get('.Pagination__Navigation-sc-fg1noi-3')
-    pagination.find('.Pagination__PageButton-sc-fg1noi-8').should('have.length', 10)
+    const pagination = cy.get('[data-cy="pagination-navigation"]')
+    pagination.find('[data-cy="page-btn"]').should('have.length', 10)
   })
 
   it('should start in page 1', () => {
     login()
+    cy.wait(delay)
 
     // Check if is selected the first page
-    const pagination = cy.get('.Pagination__Navigation-sc-fg1noi-3')
-    const firstPaginationBtn = pagination.find('.Pagination__PageButton-sc-fg1noi-8').first()
-    firstPaginationBtn.should('have.class', 'buNKgX')
+    const pagination = cy.get('[data-cy="pagination-navigation"]')
+    const firstPaginationBtn = pagination.find('[data-cy="page-btn"]').first()
+    firstPaginationBtn.should('have.attr', 'aria-current', 'true')
   })
 
   it('should be able to click another navigation button', () => {
     login()
+    cy.wait(delay)
 
     // Click on navigation button
-    const pagination = cy.get('.Pagination__Navigation-sc-fg1noi-3')
-    const paginationBtn = pagination.find('.Pagination__PageButton-sc-fg1noi-8').eq(3)  // Button 4
+    const pagination = cy.get('[data-cy="pagination-navigation"]')
+    const paginationBtn = pagination.find('[data-cy="page-btn"]').eq(3)  // Button 4
     paginationBtn.click()
 
     // Check if clicked navigation button is active
-    paginationBtn.should('have.class', 'buNKgX')
+    paginationBtn.should('have.attr', 'aria-current', 'true')
   })
 
   it('should be able to click the right navigation button', () => {
     login()
+    cy.wait(delay)
 
     // Check if is selected the first page
-    let pagination = cy.get('.Pagination__Navigation-sc-fg1noi-3')
-    let paginationBtn = pagination.find('.Pagination__PageButton-sc-fg1noi-8').first()
-    paginationBtn.should('have.class', 'buNKgX')
+    let pagination = cy.get('[data-cy="pagination-navigation"]')
+    let paginationBtn = pagination.find('[data-cy="page-btn"]').first()
+    paginationBtn.should('have.attr', 'aria-current', 'true')
 
     // Click on right nagivation button
-    const rightPaginationBtn = cy.get('.Pagination___StyledNavigationButton2-sc-fg1noi-5')
+    const rightPaginationBtn = cy.get('[data-cy="next-btn"]')
     rightPaginationBtn.click()
 
     // Check if the next navigation button is active
-    pagination = cy.get('.Pagination__Navigation-sc-fg1noi-3')
-    paginationBtn = pagination.find('.Pagination__PageButton-sc-fg1noi-8').eq(1)
-    paginationBtn.should('have.class', 'buNKgX')
+    pagination = cy.get('[data-cy="pagination-navigation"]')
+    paginationBtn = pagination.find('[data-cy="page-btn"]').eq(1)
+    paginationBtn.should('have.attr', 'aria-current', 'true')
   })
 
   it('should be able to click the leeft navigation button', () => {
     login()
-
     cy.wait(delay)
 
     // Click on right navigation button
-    const rightPaginationBtn = cy.get('.Pagination___StyledNavigationButton2-sc-fg1noi-5')
+    const rightPaginationBtn = cy.get('[data-cy="next-btn"]')
     rightPaginationBtn.click()
 
     // Check if next navigation button is active
-    let pagination = cy.get('.Pagination__Navigation-sc-fg1noi-3')
-    let paginationBtn = pagination.find('.Pagination__PageButton-sc-fg1noi-8').eq(1)
-    paginationBtn.should('have.class', 'buNKgX')
+    let pagination = cy.get('[data-cy="pagination-navigation"]')
+    let paginationBtn = pagination.find('[data-cy="page-btn"]').eq(1)
+    paginationBtn.should('have.attr', 'aria-current', 'true')
 
     cy.wait(delay)
 
     // Click on left nevigation button
-    const leftPaginationBtn = cy.get('.Pagination___StyledNavigationButton-sc-fg1noi-6')
+    const leftPaginationBtn = cy.get('[data-cy="prev-btn"]')
     leftPaginationBtn.click()
 
     // Check if previous navigation button is active
-    pagination = cy.get('.Pagination__Navigation-sc-fg1noi-3')
-    paginationBtn = pagination.find('.Pagination__PageButton-sc-fg1noi-8').first()
-    paginationBtn.should('have.class', 'buNKgX')
+    pagination = cy.get('[data-cy="pagination-navigation"]')
+    paginationBtn = pagination.find('[data-cy="page-btn"]').first()
+    paginationBtn.should('have.attr', 'aria-current', 'true')
   })
 
   it('should open avatar menu', () => {
     login()
+    cy.wait(delay)
 
     // Click on avatar
-    const avatar = cy.get('.AvatarMenu__Avatar-sc-17mkgd5-2')
+    const avatar = cy.get('[data-cy="avatar"]')
     avatar.click()
 
     // Click on profile option
-    const profileBtn = cy.get(':nth-child(1) > .AvatarMenu__MenuItemText-sc-17mkgd5-5')
+    const profileBtn = cy.get('[data-cy="avatar-menuitem-1"]')
     profileBtn.click()
 
     // Check if redirected to profile page
-    const profileTitle = cy.get('.id__Title-sc-28d1ww-2')
+    const profileTitle = cy.get('[data-cy="profile-title"]')
     profileTitle.should('have.text', 'Hi, trainer!')
   })
 
   it('should logout', () => {
     login()
+    cy.wait(delay)
 
     // Click on avatar
-    const avatar = cy.get('.AvatarMenu__Avatar-sc-17mkgd5-2')
+    const avatar = cy.get('[data-cy="avatar"]')
     avatar.click()
 
     // Click on logout option
-    const logoutBtn = cy.get(':nth-child(2) > .AvatarMenu__MenuItemText-sc-17mkgd5-5')
+    const logoutBtn = cy.get('[data-cy="avatar-menuitem-2"]')
     logoutBtn.click()
 
     // Check if redirected to login page

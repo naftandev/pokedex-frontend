@@ -13,7 +13,7 @@ export default function UserProfile() {
       <ProfileContainer>
         {trainerExists ? (
           <>
-            <Title>Hi, trainer!</Title>
+            <Title data-cy='profile-title'>Hi, trainer!</Title>
             <AvatarContainer>
               <Avatar src={user.avatar} alt={user.name} />
             </AvatarContainer>
@@ -30,8 +30,16 @@ export default function UserProfile() {
               <InfoValue>{user.email}</InfoValue>
             </ProfileInfoContainer>
             <ProfileInfoContainer>
-              <InfoName>City</InfoName>
-              <InfoValue>{user.city}</InfoValue>
+              <InfoName>Gender</InfoName>
+              <InfoValue>{user.gender}</InfoValue>
+            </ProfileInfoContainer>
+            <ProfileInfoContainer>
+              <InfoName>Region</InfoName>
+              <InfoValue>{user.region}</InfoValue>
+            </ProfileInfoContainer>
+            <ProfileInfoContainer>
+              <InfoName>Town</InfoName>
+              <InfoValue>{user.town}</InfoValue>
             </ProfileInfoContainer>
             <ProfileInfoContainer>
               <InfoName>Captured pokemons</InfoName>
@@ -39,7 +47,7 @@ export default function UserProfile() {
             </ProfileInfoContainer>
           </>
         ) : (
-          <Title>Trainer not found</Title>
+          <Title data-cy='profile-title'>Trainer not found</Title>
         )}
       </ProfileContainer>
     </Container>

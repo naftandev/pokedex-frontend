@@ -6,16 +6,18 @@ export default function PokemonCard({ picture, order, height, name, moves, stats
   const selectHandler = () => {
     const description = `
       <div style='display: flex; flex-direction: column; gap: 10px; border-radius: 5px; padding: 25px; background-color: #E9F7EF;'>
-        ${stats.map(({ name, value }) => (`
-          <div style='display: flex; gap: 5px; justify-content: flex-start;'>
-            <strong style="flex: none; font-family: 'Ubuntu'; font-size: 17px; font-weight: 500; text-align: left;">
-              ${name}:
-            </strong>
-            <span style="font-family: 'Ubuntu'; font-size: 17px; font-weight: 400; text-align: left;">
-              ${value}
-            </span>
-          </div>
-        `))}
+        ${`<div style='display: flex; flex-direction: column; gap: 10px;'>
+          ${stats.map(({ name, value }) => (`
+            <div style='display: flex; gap: 5px; justify-content: flex-start;'>
+              <strong style="flex: none; font-family: 'Ubuntu'; font-size: 17px; font-weight: 500; text-align: left;">
+                ${name}:
+              </strong>
+              <span style="font-family: 'Ubuntu'; font-size: 17px; font-weight: 400; text-align: left;">
+                ${value}
+              </span>
+            </div>
+          `))}
+        </div>`.replaceAll(',', '')}
         <div style='display: flex; gap: 5px; justify-content: flex-start;'>
           <strong style="flex: none; font-family: 'Ubuntu'; font-size: 17px; font-weight: 500; text-align: left;">
             Abilities:
@@ -38,7 +40,7 @@ export default function PokemonCard({ picture, order, height, name, moves, stats
   }
 
   return (
-    <Container onClick={selectHandler}>
+    <Container role='contentinfo' data-cy='pokemon-card' onClick={selectHandler}>
       <PictureContainer>
         <PictureWrapper>
           <Picture src={picture} alt={name} />

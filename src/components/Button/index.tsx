@@ -1,6 +1,6 @@
 import tw from 'twin.macro'
 import { IButtonProps } from '@interfaces'
-import { Spinner } from '@components'
+import Spinner from '../Spinner'
 
 export default function Button({ type, text, isLoading, onClick }: IButtonProps) {
   return (

@@ -1,7 +1,7 @@
-import { IUserData } from '@interfaces'
+import { ITrainerData } from '@interfaces'
 
 export interface IHeaderProps {
-  user: IUserData
+  user: ITrainerData
   options: IHeaderOptions[]
 }
 

@@ -17,7 +17,7 @@ export default function TextInput({ type, placeholder, value = '', errorMsg, onC
           onChange={({ target: { value } }) => onChange(value)}
         />
         {type === 'password' ? (
-          <IconContainer onClick={toggleValueVisible}>
+          <IconContainer role='button' data-cy='toggle-type-btn' onClick={toggleValueVisible}>
             {!isValueVisible ? (
               <Icon src='/icons/icon-hide-grey.svg' alt='Hide' />
             ) : (
@@ -26,12 +26,12 @@ export default function TextInput({ type, placeholder, value = '', errorMsg, onC
           </IconContainer>
         ) : null}
         {value ? (
-          <IconContainer onClick={() => onChange('')}>
+          <IconContainer data-cy={`clean-btn-${type}`} role='button' onClick={() => onChange('')}>
             <Icon tw='w-3 h-3' src='/icons/icon-close-grey.svg' alt='Clean' />
           </IconContainer>
         ) : null}
       </InputContainer>
-      {errorMsg ? <ErrorMsg>{errorMsg}</ErrorMsg> : null}
+      {errorMsg ? <ErrorMsg data-cy={`error-msg-${type}`}>{errorMsg}</ErrorMsg> : null}
     </Container>
   )
 }

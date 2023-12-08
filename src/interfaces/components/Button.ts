@@ -5,4 +5,4 @@ export interface IButtonProps {
   onClick?: () => void
 }
 
-type TButtonType = 'button' | 'reset' | 'submit'
+export type TButtonType = 'button' | 'reset' | 'submit'

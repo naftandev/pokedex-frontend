@@ -20,10 +20,14 @@ export default function Pagination({ total, max, page, isDisabled, setPage }: IP
         ? index
         : '...'
 
+      const isCurrent = pageNumber === page ? 'true' : 'false'
+
       buttons.push(
         <PageButton
           key={index}
-          $current={pageNumber === page ? 'true' : 'false'}
+          data-cy='page-btn'
+          aria-current={isCurrent}
+          $current={isCurrent}
           onClick={() => typeof pageNumber === 'number' && !isDisabled && setPage(pageNumber)}
         >
           {pageNumber}
@@ -40,20 +44,22 @@ export default function Pagination({ total, max, page, isDisabled, setPage }: IP
         Showing <PaginationInfoSpan>{page}</PaginationInfoSpan> to <PaginationInfoSpan>{max}</PaginationInfoSpan> of{' '}
         <PaginationInfoSpan>{total}</PaginationInfoSpan> results
       </PaginationInfo>
-      <Navigation aria-label='Pagination'>
+      <Navigation data-cy='pagination-navigation' aria-label='Pagination'>
         <NavigationButton
+          data-cy='prev-btn'
+          title='Previous'
           tw='rounded-l-md'
           onClick={() => !isDisabled && setPage(page > 1 ? page - 1 : page)}
         >
-          <NavigationButtonSpan>Previous</NavigationButtonSpan>
           <ChevronLeftIcon tw='h-5 w-5' aria-hidden='true' />
         </NavigationButton>
         {getPaginationButtons()}
         <NavigationButton
+          data-cy='next-btn'
+          title='Next'
           tw='rounded-r-md'
           onClick={() => !isDisabled && setPage(page < max ? page + 1 : page)}
         >
-          <NavigationButtonSpan>Next</NavigationButtonSpan>
           <ChevronRightIcon tw='h-5 w-5' aria-hidden='true' />
         </NavigationButton>
       </Navigation>
@@ -99,10 +105,6 @@ const NavigationButton = tw.button`
   hover:bg-gray-50
   focus:z-20
   focus:outline-offset-0
-`
-
-const NavigationButtonSpan = tw.span`
-  sr-only
 `
 
 const PageButton = styled.button<IPageButton>(({ $current }) => [

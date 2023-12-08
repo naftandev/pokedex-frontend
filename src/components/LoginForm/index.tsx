@@ -1,11 +1,16 @@
 import { FormEvent, useState } from 'react'
 import tw from 'twin.macro'
 import { TLoginFields, ILoginFields, ILoginFormProps } from '@interfaces'
-import { Button, Pokeball, TextInput } from '@components'
-import { isEmail, isExists } from '@utils'
+import TextInput from '../TextInput'
+import Logo from '../Logo'
+import Button from '../Button'
+import { isEmail, isExists } from '../../utils/forms'
 
 export default function LoginForm({ isLoading, onClick }: ILoginFormProps) {
-  const [formData, setFormData] = useState({} as ILoginFields)
+  const [formData, setFormData] = useState({
+    email: 'test@email.com',
+    password: 'SuperSecretPassword!'
+  } as ILoginFields)
   const [errors, setErrors] = useState({} as Record<string, string>)
 
   const onChangeFormHandler = (type: TLoginFields, value: string) => {
@@ -42,8 +47,8 @@ export default function LoginForm({ isLoading, onClick }: ILoginFormProps) {
 
   return (
     <Container>
-      <Pokeball direction='column' theme='dark' />
-      <Form onSubmit={onSubmitHandler}>
+      <Logo direction='column' theme='dark' />
+      <Form role='form' onSubmit={onSubmitHandler}>
         <TextInput
           type='email'
           placeholder='Email'

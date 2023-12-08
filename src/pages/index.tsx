@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import tw from 'twin.macro'
-import { Pokeball, Button } from '@components'
+import { Logo, Button } from '@components'
 
 export default function Home() {
   const { push } = useRouter()
@@ -11,7 +11,7 @@ export default function Home() {
         <Image src='/images/login-wallpaper.webp' alt='Pokemon landscape' />
       </ImageContainer>
       <SideContainer>
-        <Pokeball direction='column' theme='dark' />
+        <Logo direction='column' theme='dark' />
         <Button type='button' text='Catch them now!' onClick={() => push('/login')} />
       </SideContainer>
     </Container>

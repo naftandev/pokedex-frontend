@@ -1,8 +1,10 @@
+import { APP_URL } from '../utils'
+
 describe('Profile Page', () => {
   const login = () => {
-    const email = 'me@naftan.dev'
+    const email = 'test@email.com'
     const password = 'SuperSecretPassword!'
-    cy.visit('http://localhost:3000/login')
+    cy.visit(`${APP_URL}/login`)
 
     // Type email and password
     const emailInput = cy.get('input[type=email]')
@@ -21,35 +23,35 @@ describe('Profile Page', () => {
   })
 
   it('should detect when trainer not exists', () => {
-    cy.visit('http://localhost:3000/profile/2')
+    cy.visit(`${APP_URL}/profile/2`)
 
     // Check title
-    const title = cy.get('.id__Title-sc-28d1ww-2')
+    const title = cy.get('[data-cy="profile-title"]')
     title.should('have.text', 'Trainer not found')
   })
 
   it('should detect when trainer exists', () => {
     // Click on avatar
-    const avatar = cy.get('.AvatarMenu__Avatar-sc-17mkgd5-2')
+    const avatar = cy.get('[data-cy="avatar"]')
     avatar.click()
 
     // Click on profile option
-    const profileBtn = cy.get(':nth-child(1) > .AvatarMenu__MenuItemText-sc-17mkgd5-5')
+    const profileBtn = cy.get('[data-cy="avatar-menuitem-1"]')
     profileBtn.click()
 
     // Check title
-    const title = cy.get('.id__Title-sc-28d1ww-2')
+    const title = cy.get('[data-cy="profile-title"]')
     title.should('have.text', 'Hi, trainer!')
   })
 
   it('should redirect to dashboard when clicking on header logo', () => {
-    cy.visit('http://localhost:3000/profile/2')
+    cy.visit(`${APP_URL}/profile/2`)
 
     // Check profile URL
     cy.url().should('include', '/profile/')
 
     // Click on header logo
-    const headerLogo = cy.get('.Pokeball__IconContainer-sc-1ot8lhx-0')
+    const headerLogo = cy.get('[data-cy="logo-link"]')
     headerLogo.click()
 
     // Check dashboard URL

@@ -48,7 +48,7 @@ export default function Dashboard() {
 
   return (
     <Container>
-      <CardsContainer>
+      <CardsContainer data-cy='cards-container'>
         {!isLoading ? (
           pokemons.data?.map(pokemon => (
             <PokemonCard

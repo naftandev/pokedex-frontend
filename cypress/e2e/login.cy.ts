@@ -1,6 +1,8 @@
+import { APP_URL } from '../utils'
+
 describe('Login Page', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:3000/login')
+    cy.visit(`${APP_URL}/login`)
   })
 
   it('should be email and password required', () => {
@@ -9,11 +11,11 @@ describe('Login Page', () => {
     loginBtn.click()
 
     // Check email error message
-    let errorMsg = cy.get(':nth-child(1) > p')
+    let errorMsg = cy.get('[data-cy="error-msg-email"]')
     errorMsg.should('have.text', 'The email is required')
 
     // Check password error message
-    errorMsg = cy.get(':nth-child(2) > p')
+    errorMsg = cy.get('[data-cy="error-msg-password"]')
     errorMsg.should('have.text', 'The password is required')
   })
 
@@ -29,7 +31,7 @@ describe('Login Page', () => {
     loginBtn.click()
 
     // Check email error message
-    const errorMsg = cy.get(':nth-child(1) > p')
+    const errorMsg = cy.get('[data-cy="error-msg-email"]')
     errorMsg.should('have.text', 'The email is invalid')
   })
 
@@ -45,10 +47,10 @@ describe('Login Page', () => {
     passwordInput.type(password)
     passwordInput.should('have.value', password)
 
-    // Click on clean buttons
-    const emailCleanBtn = cy.get(':nth-child(1) > .TextInput__InputContainer-sc-1s3o8e1-1 > .TextInput__IconContainer-sc-1s3o8e1-3 > .TextInput__Icon-sc-1s3o8e1-4')
+    // Click on clean button
+    const emailCleanBtn = cy.get('[data-cy="clean-btn-email"]')
     emailCleanBtn.click()
-    const passwordCleanBtn = cy.get(':nth-child(3) > .TextInput__Icon-sc-1s3o8e1-4')
+    const passwordCleanBtn = cy.get('[data-cy="clean-btn-password"]')
     passwordCleanBtn.click()
 
     // Check if values are empty
@@ -65,7 +67,7 @@ describe('Login Page', () => {
     passwordInput.should('exist')
 
     // Click on view password button
-    const viewPasswordBtn = cy.get(':nth-child(2) > .TextInput__Icon-sc-1s3o8e1-4')
+    const viewPasswordBtn = cy.get('[data-cy="toggle-type-btn"]')
     viewPasswordBtn.click()
 
     // Check if type changed to text
@@ -74,7 +76,7 @@ describe('Login Page', () => {
   })
 
   it('should be correct email and password', () => {
-    const email = 'me@naftan.dev'
+    const email = 'test@email.com'
     const password = 'SuperSecretPassword'
 
     // Type email and password
@@ -93,7 +95,7 @@ describe('Login Page', () => {
   })
 
   it('should login and redirect to dashboard', () => {
-    const email = 'me@naftan.dev'
+    const email = 'test@email.com'
     const password = 'SuperSecretPassword!'
 
     // Type email and password
@@ -107,7 +109,7 @@ describe('Login Page', () => {
     loginBtn.click()
 
     // Check welcome message from dashboard
-    const welcomeMsg = cy.get('.Header__UserName-sc-8l6c1k-2')
+    const welcomeMsg = cy.get('[data-cy="header-user-name"]')
     welcomeMsg.should('contain.text', 'Welcome')
   })
 })

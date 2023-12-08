@@ -1,4 +1,4 @@
-export interface IPokeballProps {
+export interface ILogoProps {
   direction: TDirection
   theme: TTheme
 }
