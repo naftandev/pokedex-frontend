@@ -1,10 +1,12 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { verifyJwt } from './utils/api'
 
 export async function middleware(request: NextRequest) {
-  const token = request.cookies.get('token')
+  const token = request.cookies.get('token') || ''  // --> For pages
+  const bearerToken = request.headers.get('Authorization')?.split(' ')[1] || ''  // --> For API
 
-  {/* ROUTES */}
+  {/* PAGES */}
   /** Login */
   if (request.nextUrl.pathname.startsWith('/login')) {
     if (token) {
@@ -20,12 +22,25 @@ export async function middleware(request: NextRequest) {
     }
     return NextResponse.next()
   }
+
+  {/* API */}
+  /** Pokemons */
+  if (request.nextUrl.pathname.startsWith('/api/pokemons')) {
+    try {
+      await verifyJwt(bearerToken)
+      return NextResponse.next()
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : 'Unexpected error'
+      return NextResponse.json({ msg },  { status: 401 })
+    }
+  }
 }
 
 export const config = {
   matcher: [
     '/login',
     '/dashboard',
-    '/profile/:path*'
+    '/profile/:path*',
+    '/api/:path*'
   ]
 }

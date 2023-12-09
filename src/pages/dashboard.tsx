@@ -22,8 +22,10 @@ export default function Dashboard() {
       title: 'Oops...',
       text: msg,
       willClose: () => {
-        Cookies.remove('token')
-        push('/login')
+        if (msg === 'Invalid authorization token') {
+          Cookies.remove('token')
+          push('/login')
+        }
       }
     })
   }

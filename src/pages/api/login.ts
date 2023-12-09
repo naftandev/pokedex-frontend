@@ -19,6 +19,7 @@ export default async function login(req: NextApiRequest, res: NextApiResponse) {
       res.status(200).json({ token, user })
     }, 1000)
   } catch (error) {
-    res.status(500).json({ msg: 'Error to create the authentication' })
+    const msg = error instanceof Error ? error.message : 'Unexpected error'
+    res.status(500).json({ msg })
   }
 }
