@@ -12,3 +12,7 @@
 - Jest
 - React Testing Library
 - Cypress
+
+## Run project
+- Install dependencies: `npm i`
+- Run project: `npm run dev`
