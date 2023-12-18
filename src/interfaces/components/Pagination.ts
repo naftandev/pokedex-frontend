@@ -1,11 +1,11 @@
 export interface IPaginationProps {
-  total: number
-  max: number
-  page: number
-  isDisabled?: boolean
+  totalResults: number
+  maxPages: number
+  currentPage: number
   setPage: (value: number) => void
+  isDisabled?: boolean
 }
 
 export interface IPageButton {
-  $current?: 'true' | 'false'
+  $current?: boolean
 }

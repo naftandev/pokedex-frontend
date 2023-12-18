@@ -1,5 +1,5 @@
 import nextJest from 'next/jest'
-import type {Config} from 'jest'
+import type { Config } from 'jest'
 
 const babelConfigStyledComponents = {
   presets: [['next/babel', { 'preset-react': { runtime: 'automatic' } }]],
@@ -15,7 +15,7 @@ const config: Config = {
   testEnvironment: 'jest-environment-jsdom',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   transform: {
-    '^.+\\.(js|jsx|ts|tsx|mjs)$': ['babel-jest', babelConfigStyledComponents],
+    '^.+\\.(js|jsx|ts|tsx|mjs)$': ['babel-jest', babelConfigStyledComponents]
   }
 }
 

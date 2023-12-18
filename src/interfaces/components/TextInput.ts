@@ -1,5 +1,6 @@
 export interface ITextInputProps {
   type: TTextInputType
+  name: string
   placeholder?: string
   value: string
   errorMsg?: string

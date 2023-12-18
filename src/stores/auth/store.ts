@@ -1,28 +1,43 @@
 import { StateCreator } from 'zustand'
 import Cookies from 'js-cookie'
 import { IAuthStore } from '@interfaces'
-import { login } from '@api'
+import { signup, login } from '@api'
+import { getResponseError } from '@utils'
 
 const store: StateCreator<IAuthStore> = (set) => ({
-  login: async ({ email, password }) => {
+  signup: async data => {
     return new Promise((resolve, reject) => {
-      login({email, password})
+      signup(data)
         .then(({ data }) => {
-          const { token, user } = data
+          const { token, trainer } = data
           Cookies.set('token', token)
-          set({ user })
+          set({ trainer })
           resolve()
         })
         .catch(error => {
-          const { data } = error.response
-          set({ user: undefined })
-          reject(data.msg)
+          set({ trainer: undefined })
+          reject(getResponseError(error))
+        })
+    })
+  },
+  login: async data => {
+    return new Promise((resolve, reject) => {
+      login(data)
+        .then(({ data }) => {
+          const { token, trainer } = data
+          Cookies.set('token', token)
+          set({ trainer })
+          resolve()
+        })
+        .catch(error => {
+          set({ trainer: undefined })
+          reject(getResponseError(error))
         })
     })
   },
   logout: () => {
     if (Cookies.get('token')) Cookies.remove('token')
-    set({ user: undefined })
+    set({ trainer: undefined })
   }
 })
 

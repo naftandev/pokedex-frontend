@@ -1,5 +1,3 @@
-import StyledComponentsRegistry from './StyledComponentsRegistry'
+import { StyledComponentsRegistry } from './registry'
 
-export {
-  StyledComponentsRegistry
-}
+export { StyledComponentsRegistry }

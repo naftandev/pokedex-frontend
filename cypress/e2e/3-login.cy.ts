@@ -1,6 +1,6 @@
-import { APP_URL } from '../utils'
+import { APP_URL, credentials } from '../utils'
 
-describe('Login Page', () => {
+describe('Log In Page', () => {
   beforeEach(() => {
     cy.visit(`${APP_URL}/login`)
   })
@@ -20,14 +20,12 @@ describe('Login Page', () => {
   })
 
   it('should be valid email', () => {
-    // Type email and password
-    const emailInput = cy.get('input[type=email]')
-    const passwordInput = cy.get('input[type=password]')
+    // Type email
+    const emailInput = cy.get('input[name="email"]')
     emailInput.type('email@invalid')
-    passwordInput.type('SecretPassword')
 
     // Click on login button
-    const loginBtn = cy.get('button[type=submit]')
+    const loginBtn = cy.get('button[type="submit"]')
     loginBtn.click()
 
     // Check email error message
@@ -36,33 +34,25 @@ describe('Login Page', () => {
   })
 
   it('should be clear values', () => {
-    const email = 'test@email.com'
-    const password = 'SecretPassword'
+    const email = credentials.email
 
-    // Type email and password and check if values are not empty
-    let emailInput = cy.get('input[type=email]')
+    // Type email and check if value is not empty
+    let emailInput = cy.get('input[name="email"]')
     emailInput.type(email)
     emailInput.should('have.value', email)
-    let passwordInput = cy.get('input[type=password]')
-    passwordInput.type(password)
-    passwordInput.should('have.value', password)
 
     // Click on clean button
     const emailCleanBtn = cy.get('[data-cy="clean-btn-email"]')
     emailCleanBtn.click()
-    const passwordCleanBtn = cy.get('[data-cy="clean-btn-password"]')
-    passwordCleanBtn.click()
 
-    // Check if values are empty
-    emailInput = cy.get('input[type=email]')
+    // Check if value is empty
+    emailInput = cy.get('input[name="email"]')
     emailInput.should('have.value', '')
-    passwordInput = cy.get('input[type=password]')
-    passwordInput.should('have.value', '')
   })
 
   it('should be visible password', () => {
     // Check if password input exist with password type
-    let passwordInput = cy.get('input[type=password]')
+    let passwordInput = cy.get('input[name="password"]')
     passwordInput.type('SecretPassword')
     passwordInput.should('exist')
 
@@ -71,22 +61,19 @@ describe('Login Page', () => {
     viewPasswordBtn.click()
 
     // Check if type changed to text
-    passwordInput = cy.get('input[type=text]')
+    passwordInput = cy.get('input[type="text"]')
     passwordInput.should('exist')
   })
 
   it('should be correct email and password', () => {
-    const email = 'test@email.com'
-    const password = 'SuperSecretPassword'
-
     // Type email and password
-    const emailInput = cy.get('input[type=email]')
-    const passwordInput = cy.get('input[type=password]')
-    emailInput.type(email)
-    passwordInput.type(password)
+    const emailInput = cy.get('input[name="email"]')
+    const passwordInput = cy.get('input[name="password"]')
+    emailInput.type(credentials.email)
+    passwordInput.type('IncorrectPassword')
 
     // Click on login button
-    const loginBtn = cy.get('button[type=submit]')
+    const loginBtn = cy.get('button[type="submit"]')
     loginBtn.click()
 
     // Check modal error message (from backend)
@@ -95,21 +82,18 @@ describe('Login Page', () => {
   })
 
   it('should login and redirect to dashboard', () => {
-    const email = 'test@email.com'
-    const password = 'SuperSecretPassword!'
-
     // Type email and password
-    const emailInput = cy.get('input[type=email]')
-    const passwordInput = cy.get('input[type=password]')
-    emailInput.type(email)
-    passwordInput.type(password)
+    const emailInput = cy.get('input[name="email"]')
+    const passwordInput = cy.get('input[name="password"]')
+    emailInput.type(credentials.email)
+    passwordInput.type(credentials.password)
 
     // Click on login button
-    const loginBtn = cy.get('button[type=submit]')
+    const loginBtn = cy.get('button[type="submit"]')
     loginBtn.click()
 
     // Check welcome message from dashboard
-    const welcomeMsg = cy.get('[data-cy="header-user-name"]')
+    const welcomeMsg = cy.get('[data-cy="header-trainer-name"]')
     welcomeMsg.should('contain.text', 'Welcome')
   })
 })

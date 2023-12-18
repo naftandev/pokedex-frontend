@@ -4,7 +4,7 @@ import { IIconContainerProps, ILogoProps, ITitleProps } from '@interfaces'
 export default function Logo({ direction, theme }: ILogoProps) {
   return (
     <IconContainer role='group' $direction={direction}>
-      <Icon src='/icons/icon-pokeball.svg' alt='Pokeball' />
+      <Icon src='/images/pokeball.png' alt='Pokeball' />
       <Title $theme={theme}>POKEDEX</Title>
     </IconContainer>
   )
@@ -21,6 +21,6 @@ const Icon = tw.img`
 `
 
 const Title = styled.h1<ITitleProps>(({ $theme }) => [
-  tw`font-extrabold text-3xl leading-normal`,
+  tw`hidden font-extrabold text-3xl leading-normal md:block`,
   $theme === 'dark' ? tw`text-primary-color` : tw`text-secondary-color`
 ])

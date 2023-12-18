@@ -1,16 +1,16 @@
 import Head from 'next/head'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 import Swal from 'sweetalert2'
 import tw from 'twin.macro'
-import { LoginForm, Logo } from '@components'
-import { ILoginFields } from '@interfaces'
+import { SignupForm, Logo } from '@components'
+import { ISignupData } from '@interfaces'
 import { useAuthStore } from '@stores'
+import Link from 'next/link'
 
-export default function Login() {
+export default function Signup() {
   const [isLoading, setIsLoading] = useState(false)
-  const login = useAuthStore(state => state.login)
+  const signup = useAuthStore(state => state.signup)
   const { push } = useRouter()
 
   const catchHandler = (msg: string) => {
@@ -21,9 +21,9 @@ export default function Login() {
     })
   }
 
-  const onSubmitHandler = (data: ILoginFields) => {
+  const onSubmitHandler = (data: ISignupData) => {
     setIsLoading(true)
-    login(data)
+    signup(data)
       .then(() => push('/dashboard'))
       .catch(catchHandler)
       .finally(() => setIsLoading(false))
@@ -32,16 +32,16 @@ export default function Login() {
   return (
     <Container>
       <Head>
-        <title>Pokedex | Login</title>
+        <title>Pokedex | Sign Up</title>
       </Head>
       <ImageContainer>
         <Image src='/images/login-wallpaper.webp' alt='Pokemon landscape' />
       </ImageContainer>
       <FormContainer>
         <Logo direction='column' theme='dark' />
-        <LoginForm isLoading={isLoading} onSubmit={onSubmitHandler} />
-        <Link href='/signup'>
-          <LinkText>Sign Up</LinkText>
+        <SignupForm isLoading={isLoading} onSubmit={onSubmitHandler} />
+        <Link href='/login'>
+          <LinkText>Log In</LinkText>
         </Link>
       </FormContainer>
     </Container>

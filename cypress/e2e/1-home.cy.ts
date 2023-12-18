@@ -7,17 +7,17 @@ describe('Home Page', () => {
 
   it('should exist start button', () => {
     // Check if start button exists
-    const startButton = cy.get('button[type=button]')
+    const startButton = cy.get('button[type="button"]')
     startButton.should('have.text', 'Catch them now!')
   })
 
   it('should redirect to login/dashboard page', () => {
     // Click on start button
-    let button = cy.get('button[type=button]')
+    let button = cy.get('button[type="button"]')
     button.click()
 
     // Check if redirected to login page and login button exits
-    button = cy.get('button[type=submit]')
-    button.should('have.text', 'LOGIN')
+    button = cy.get('button[type="submit"]')
+    button.should('have.text', 'LOG IN')
   })
 })

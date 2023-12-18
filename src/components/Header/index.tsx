@@ -4,17 +4,17 @@ import { IHeaderProps } from '@interfaces'
 import Logo from '../Logo'
 import AvatarMenu from '../AvatarMenu'
 
-export default function Header({ user, options }: IHeaderProps) {
+export default function Header({ trainer, options }: IHeaderProps) {
   return (
     <Container>
       <Link href='/dashboard' data-cy='logo-link'>
         <Logo direction='row' theme='light' />
       </Link>
       <ProfileContainer>
-        <UserName data-cy='header-user-name'>Welcome, {user.name}!</UserName>
+        <UserName data-cy='header-trainer-name'>Welcome, {trainer.name}!</UserName>
         <AvatarMenu
-          avatar={user.avatar}
-          name={user.name}
+          avatar={trainer.avatar}
+          name={trainer.name}
           options={options}
         />
       </ProfileContainer>
@@ -38,6 +38,8 @@ const ProfileContainer = tw.div`
 `
 
 const UserName = tw.strong`
+  hidden
   text-base
   text-secondary-color
+  md:block
 `

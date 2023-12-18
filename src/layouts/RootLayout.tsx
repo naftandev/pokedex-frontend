@@ -8,9 +8,9 @@ import { useAuthStore } from '@stores'
 
 export default function RootLayout({ children }: IRootLayoutProps) {
   const { route, push } = useRouter()
-  const user = useStore({ store: useAuthStore, callback: state => state.user })
+  const trainer = useStore({ store: useAuthStore, callback: state => state.trainer })
   const logout = useAuthStore(state => state.logout)
-  const headerIsVisible = user && !['/', '/login'].includes(route)
+  const headerIsVisible = trainer && !['/', '/signup', '/login'].includes(route)
 
   const logoutHandler = () => {
     push('/login')
@@ -21,9 +21,9 @@ export default function RootLayout({ children }: IRootLayoutProps) {
     <StyledComponentsRegistry>
       {headerIsVisible ? (
         <Header
-          user={user}
+          trainer={trainer}
           options={[
-            { id: 1, label: 'Profile', onClick: () => push(`/profile/${user.id}`) },
+            { id: 1, label: 'Profile', onClick: () => push(`/profile/${trainer._id}`) },
             { id: 2, label: 'Logout', onClick: logoutHandler },
           ]}
         />

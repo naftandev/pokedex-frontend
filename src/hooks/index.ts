@@ -1,3 +1,4 @@
 import useStore from './useStore'
+import usePagination from './usePagination'
 
-export { useStore }
+export { useStore, usePagination }

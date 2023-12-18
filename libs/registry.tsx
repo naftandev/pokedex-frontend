@@ -7,7 +7,7 @@ interface IStyledComponentsRegistryProps {
   children: React.ReactNode
 }
 
-export default function StyledComponentsRegistry({ children }: IStyledComponentsRegistryProps) {
+export function StyledComponentsRegistry({ children }: IStyledComponentsRegistryProps) {
   const [styledComponentsStyleSheet] = useState(() => new ServerStyleSheet())
 
   useServerInsertedHTML(() => {

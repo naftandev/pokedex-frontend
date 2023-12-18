@@ -1,53 +1,98 @@
+import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 import tw from 'twin.macro'
-import { useStore } from '@hooks'
-import { useAuthStore } from '@stores'
+import Swal from 'sweetalert2'
+import Cookies from 'js-cookie'
+import { ITrainerData } from '@interfaces'
+import { getTrainer } from '@api'
+import { Spinner } from '@components'
+import { getResponseError } from '@utils'
 
 export default function UserProfile() {
-  const { query: { id } } = useRouter()
-  const user = useStore({ store: useAuthStore, callback: state => state.user })
-  const trainerExists = user?.id === Number(id)
+  const { push, query: { id } } = useRouter()
+  const [trainer, setTrainer] = useState<ITrainerData | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [errorMsg, setErrorMsg] = useState('')
+
+  useEffect(() => {
+    if (id) getTrainerHandler()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id])
+
+  const getTrainerHandler = () => {
+    setIsLoading(true)
+    getTrainer(id as string)
+      .then(({ data }) => setTrainer(data))
+      .catch(error => catchHandler(getResponseError(error)))
+      .finally(() => setIsLoading(false))
+  }
+
+  const catchHandler = (msg: string) => {
+    setErrorMsg(msg)
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: msg,
+      willClose: () => {
+        if (msg === 'Invalid authorization token') {
+          Cookies.remove('token')
+          push('/login')
+        }
+      }
+    })
+  }
+
+  if (errorMsg) return null
 
   return (
     <Container>
+      <Head>
+        <title>Pokedex | Profile</title>
+      </Head>
       <ProfileContainer>
-        {trainerExists ? (
-          <>
-            <Title data-cy='profile-title'>Hi, trainer!</Title>
-            <AvatarContainer>
-              <Avatar src={user.avatar} alt={user.name} />
-            </AvatarContainer>
-            <ProfileInfoContainer>
-              <InfoName>Name</InfoName>
-              <InfoValue>{user.name}</InfoValue>
-            </ProfileInfoContainer>
-            <ProfileInfoContainer>
-              <InfoName>Lastname</InfoName>
-              <InfoValue>{user.lastname}</InfoValue>
-            </ProfileInfoContainer>
-            <ProfileInfoContainer>
-              <InfoName>Email</InfoName>
-              <InfoValue>{user.email}</InfoValue>
-            </ProfileInfoContainer>
-            <ProfileInfoContainer>
-              <InfoName>Gender</InfoName>
-              <InfoValue>{user.gender}</InfoValue>
-            </ProfileInfoContainer>
-            <ProfileInfoContainer>
-              <InfoName>Region</InfoName>
-              <InfoValue>{user.region}</InfoValue>
-            </ProfileInfoContainer>
-            <ProfileInfoContainer>
-              <InfoName>Town</InfoName>
-              <InfoValue>{user.town}</InfoValue>
-            </ProfileInfoContainer>
-            <ProfileInfoContainer>
-              <InfoName>Captured pokemons</InfoName>
-              <InfoValue>{user.captured}</InfoValue>
-            </ProfileInfoContainer>
-          </>
+        {!isLoading ? (
+          trainer ? (
+            <>
+              <Title data-cy='profile-title'>Hi, trainer!</Title>
+              <AvatarContainer>
+                <Avatar
+                  src={trainer.avatar || '/images/avatars/default-silhouette.png'}
+                  alt={trainer.name}
+                />
+              </AvatarContainer>
+              <ProfileInfoContainer>
+                <InfoName>Name</InfoName>
+                <InfoValue>{trainer.name}</InfoValue>
+              </ProfileInfoContainer>
+              <ProfileInfoContainer>
+                <InfoName>Lastname</InfoName>
+                <InfoValue>{trainer.lastname}</InfoValue>
+              </ProfileInfoContainer>
+              <ProfileInfoContainer>
+                <InfoName>Email</InfoName>
+                <InfoValue>{trainer.email}</InfoValue>
+              </ProfileInfoContainer>
+              <ProfileInfoContainer>
+                <InfoName>Gender</InfoName>
+                <InfoValue>{trainer.gender}</InfoValue>
+              </ProfileInfoContainer>
+              <ProfileInfoContainer>
+                <InfoName>Region</InfoName>
+                <InfoValue>{trainer.region}</InfoValue>
+              </ProfileInfoContainer>
+              <ProfileInfoContainer>
+                <InfoName>City</InfoName>
+                <InfoValue>{trainer.city}</InfoValue>
+              </ProfileInfoContainer>
+              <ProfileInfoContainer>
+                <InfoName>Captured pokemons</InfoName>
+                <InfoValue>{trainer.captured || 0}</InfoValue>
+              </ProfileInfoContainer>
+            </>
+          ) : null
         ) : (
-          <Title data-cy='profile-title'>Trainer not found</Title>
+          <Spinner />
         )}
       </ProfileContainer>
     </Container>

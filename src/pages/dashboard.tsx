@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import React, { SetStateAction, useEffect, useState } from 'react'
 import tw from 'twin.macro'
 import { useRouter } from 'next/router'
@@ -6,17 +7,31 @@ import Cookies from 'js-cookie'
 import { getPokemons } from '@api'
 import { Pagination, PokemonCard, Spinner } from '@components'
 import { IGetPokemonsResponse } from '@interfaces'
+import { getResponseError } from '@utils'
 
 export default function Dashboard() {
   const { push } = useRouter()
   const [pokemons, setPokemons] = useState({} as IGetPokemonsResponse)
   const [isLoading, setIsLoading] = useState(true)
   const [page, setPage] = useState(1)
-  const [error, setError] = useState<SetStateAction<string | null>>(null)
+  const [errorMsg, setErrorMsg] = useState<SetStateAction<string | null>>(null)
   const limit = 10
 
+  useEffect(() => {
+    getPokemonsHandler()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page])
+
+  const getPokemonsHandler = () => {
+    setIsLoading(true)
+    getPokemons(limit, limit * (page - 1))
+      .then(({ data }) => setPokemons(data))
+      .catch(error => catchHandler(getResponseError(error)))
+      .finally(() => setIsLoading(false))
+  }
+
   const catchHandler = (msg: string) => {
-    setError(msg)
+    setErrorMsg(msg)
     Swal.fire({
       icon: 'error',
       title: 'Oops...',
@@ -30,26 +45,13 @@ export default function Dashboard() {
     })
   }
 
-  useEffect(() => {
-    getPokemonsHandler()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page])
-
-  const getPokemonsHandler = () => {
-    setIsLoading(true)
-    getPokemons(limit, limit * (page - 1))
-      .then(({ data }) => setPokemons(data))
-      .catch(error => {
-        const { data } = error.response
-        catchHandler(data.msg)
-      })
-      .finally(() => setIsLoading(false))
-  }
-
-  if (error) return null
+  if (errorMsg) return null
 
   return (
     <Container>
+      <Head>
+        <title>Pokedex | Dashboard</title>
+      </Head>
       <CardsContainer data-cy='cards-container'>
         {!isLoading ? (
           pokemons.data?.map(pokemon => (
@@ -67,11 +69,11 @@ export default function Dashboard() {
         ) : <Spinner />}
       </CardsContainer>
       <Pagination
-        total={pokemons.length || 0}
-        max={Math.ceil(pokemons.length / limit) || 0}
-        page={pokemons.data?.length ? page : 0}
-        isDisabled={isLoading || !pokemons.data?.length}
+        totalResults={pokemons.length || 0}
+        maxPages={Math.ceil(pokemons.length / limit) || 0}
+        currentPage={pokemons.data?.length ? page : 0}
         setPage={setPage}
+        isDisabled={isLoading || !pokemons.data?.length}
       />
     </Container>
   )

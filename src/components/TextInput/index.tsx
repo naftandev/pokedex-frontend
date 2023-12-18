@@ -2,7 +2,7 @@ import { useState } from 'react'
 import tw from 'twin.macro'
 import { ITextInputProps } from '@interfaces'
 
-export default function TextInput({ type, placeholder, value = '', errorMsg, onChange }: ITextInputProps) {
+export default function TextInput({ type, name, placeholder, value = '', errorMsg, onChange }: ITextInputProps) {
   const [isValueVisible, setIsValueVisible] = useState(false)
 
   const toggleValueVisible = () => setIsValueVisible(prevState => !prevState)
@@ -12,6 +12,7 @@ export default function TextInput({ type, placeholder, value = '', errorMsg, onC
       <InputContainer>
         <InputField
           type={isValueVisible ? 'text' : type}
+          name={name}
           placeholder={placeholder}
           value={value}
           onChange={({ target: { value } }) => onChange(value)}
@@ -31,12 +32,14 @@ export default function TextInput({ type, placeholder, value = '', errorMsg, onC
           </IconContainer>
         ) : null}
       </InputContainer>
-      {errorMsg ? <ErrorMsg data-cy={`error-msg-${type}`}>{errorMsg}</ErrorMsg> : null}
+      {errorMsg ? <ErrorMsg data-cy={`error-msg-${name}`}>{errorMsg}</ErrorMsg> : null}
     </Container>
   )
 }
 
-const Container = tw.div``
+const Container = tw.div`
+  w-full
+`
 
 const InputContainer = tw.div`
   w-full

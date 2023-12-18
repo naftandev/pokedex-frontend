@@ -1,32 +1,30 @@
-import { APP_URL } from '../utils'
+import { APP_URL, credentials } from '../utils'
+
+const login = () => {
+  cy.visit(`${APP_URL}/login`)
+
+  // Type email and password
+  const emailInput = cy.get('input[name="email"]')
+  const passwordInput = cy.get('input[name="password"]')
+  emailInput.type(credentials.email)
+  passwordInput.type(credentials.password)
+
+  // Click on login button
+  const loginBtn = cy.get('button[type="submit"]')
+  loginBtn.click()
+}
 
 describe('Profile Page', () => {
-  const login = () => {
-    const email = 'test@email.com'
-    const password = 'SuperSecretPassword!'
-    cy.visit(`${APP_URL}/login`)
-
-    // Type email and password
-    const emailInput = cy.get('input[type=email]')
-    const passwordInput = cy.get('input[type=password]')
-    emailInput.type(email)
-    passwordInput.type(password)
-
-    // Click on login button
-    const loginBtn = cy.get('button[type=submit]')
-    loginBtn.click()
-  }
-
   beforeEach(() => {
     login()
     cy.wait(1000)
   })
 
   it('should detect when trainer not exists', () => {
-    cy.visit(`${APP_URL}/profile/2`)
+    cy.visit(`${APP_URL}/profile/000000000000000000000000`)
 
     // Check title
-    const title = cy.get('[data-cy="profile-title"]')
+    const title = cy.get('#swal2-html-container')
     title.should('have.text', 'Trainer not found')
   })
 
@@ -45,7 +43,9 @@ describe('Profile Page', () => {
   })
 
   it('should redirect to dashboard when clicking on header logo', () => {
-    cy.visit(`${APP_URL}/profile/2`)
+    cy.visit(`${APP_URL}/profile/000000000000000000000000`)
+
+    cy.get('.swal2-confirm').click()
 
     // Check profile URL
     cy.url().should('include', '/profile/')

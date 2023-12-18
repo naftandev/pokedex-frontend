@@ -1,31 +1,28 @@
-import { APP_URL } from '../utils'
+import { APP_URL, credentials } from '../utils'
+
+const delay = 1000
+
+const login = () => {
+  // Type email and password
+  const emailInput = cy.get('input[name="email"]')
+  const passwordInput = cy.get('input[name="password"]')
+  emailInput.type(credentials.email)
+  passwordInput.type(credentials.password)
+
+  // Click on login button
+  const loginBtn = cy.get('button[type="submit"]')
+  loginBtn.click()
+}
 
 describe('Dashboard Page', () => {
-  const delay = 1500
-
-  const login = () => {
-    const email = 'test@email.com'
-    const password = 'SuperSecretPassword!'
-
-    // Type email and password
-    const emailInput = cy.get('input[type=email]')
-    const passwordInput = cy.get('input[type=password]')
-    emailInput.type(email)
-    passwordInput.type(password)
-
-    // Click on login button
-    const loginBtn = cy.get('button[type=submit]')
-    loginBtn.click()
-  }
-
   beforeEach(() => {
     cy.visit(`${APP_URL}/dashboard`)
   })
 
   it('should redirect to login page if is not login', () => {
     // Check if button login exists
-    const loginBtn = cy.get('button[type=submit]')
-    loginBtn.should('have.text', 'LOGIN')
+    const loginBtn = cy.get('button[type="submit"]')
+    loginBtn.should('have.text', 'LOG IN')
   })
 
   it('should redirect to dashboard page when login', () => {
@@ -33,7 +30,7 @@ describe('Dashboard Page', () => {
     cy.wait(delay)
 
     // Check welcome message
-    const welcomeMsg = cy.get('[data-cy="header-user-name"]')
+    const welcomeMsg = cy.get('[data-cy="header-trainer-name"]')
     welcomeMsg.should('contain.text', 'Welcome')
   })
 
@@ -97,7 +94,7 @@ describe('Dashboard Page', () => {
     paginationBtn.should('have.attr', 'aria-current', 'true')
   })
 
-  it('should be able to click the leeft navigation button', () => {
+  it('should be able to click the left navigation button', () => {
     login()
     cy.wait(delay)
 
@@ -152,7 +149,7 @@ describe('Dashboard Page', () => {
     logoutBtn.click()
 
     // Check if redirected to login page
-    const loginBtn = cy.get('button[type=submit]')
-    loginBtn.should('have.text', 'LOGIN')
+    const loginBtn = cy.get('button[type="submit"]')
+    loginBtn.should('have.text', 'LOG IN')
   })
 })

@@ -4,11 +4,11 @@ import LoginForm from '.'
 
 const user = userEvent.setup()
 
-const mockedOnClick = jest.fn()
+const mockedOnSubmit = jest.fn()
 
 describe('Name of the group', () => {
   beforeEach(() => {
-    render(<LoginForm onClick={mockedOnClick} />)
+    render(<LoginForm onSubmit={mockedOnSubmit} />)
   })
 
   test('should render', () => {
@@ -17,7 +17,7 @@ describe('Name of the group', () => {
   })
 
   test('should be required email and password', async () => {
-    const loginBtn = screen.getByRole('button', { name: /LOGIN/ })
+    const loginBtn = screen.getByRole('button', { name: /LOG IN/ })
     await user.click(loginBtn)
 
     const emailErrorMsg = screen.getByText(/The email is required/)
@@ -30,7 +30,7 @@ describe('Name of the group', () => {
     const emailInput = screen.getByPlaceholderText('Email')
     await user.type(emailInput, 'me@naftan')
 
-    const loginBtn = screen.getByRole('button', { name: /LOGIN/ })
+    const loginBtn = screen.getByRole('button', { name: /LOG IN/ })
     await user.click(loginBtn)
 
     const emailErrorMsg = screen.getByText(/The email is invalid/)
@@ -39,7 +39,7 @@ describe('Name of the group', () => {
 
   test('should click on login button', async () => {
     const mock = {
-      email: 'test@email.com',
+      email: 'ash@pokedex.com',
       password: 'SuperSecretPassword!'
     }
     const emailInput = screen.getByPlaceholderText('Email')
@@ -47,8 +47,8 @@ describe('Name of the group', () => {
     await user.type(emailInput, mock.email)
     await user.type(passwordInput, mock.password)
 
-    const loginBtn = screen.getByRole('button', { name: /LOGIN/ })
+    const loginBtn = screen.getByRole('button', { name: /LOG IN/ })
     await user.click(loginBtn)
-    expect(mockedOnClick).toHaveBeenCalledWith(mock)
+    expect(mockedOnSubmit).toHaveBeenCalledWith(mock)
   })
 })

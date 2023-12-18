@@ -1,64 +1,35 @@
-import { ReactElement, useState } from 'react'
 import tw, { styled } from 'twin.macro'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid'
 import { IPageButton, IPaginationProps } from '@interfaces'
+import { usePagination } from '@hooks'
 
-export default function Pagination({ total, max, page, isDisabled, setPage }: IPaginationProps) {
-  const [section, setSection] = useState(1)
-  const BUTTONS_LIMIT = max >= 10 ? 10 : max
-
-  const getPaginationButtons = () => {
-    const buttons = [] as ReactElement[]
-    const pagesInit = (section === 1 ? section : (section - 1) * BUTTONS_LIMIT) - (page < BUTTONS_LIMIT ? 0 : 1)
-    const pagesLimit = BUTTONS_LIMIT * section
-
-    if (page < max && page >= pagesLimit) setSection(prevState => ++prevState)
-    if (section > 1 && page <= pagesInit) setSection(prevState => --prevState)
-
-    for (let index = pagesInit; index <= pagesLimit; index++) {
-      const pageNumber = (section === 1 ? index < pagesLimit : ![pagesInit, pagesLimit].includes(index))
-        ? index
-        : '...'
-
-      const isCurrent = pageNumber === page ? 'true' : 'false'
-
-      buttons.push(
-        <PageButton
-          key={index}
-          data-cy='page-btn'
-          aria-current={isCurrent}
-          $current={isCurrent}
-          onClick={() => typeof pageNumber === 'number' && !isDisabled && setPage(pageNumber)}
-        >
-          {pageNumber}
-        </PageButton>
-      )
-    }
-
-    return buttons
-  }
+export default function Pagination({ totalResults, maxPages, currentPage, setPage, isDisabled }: IPaginationProps) {
+  const paginationButtons = usePagination({ maxPages, currentPage, setPage, Component: PageButton, isDisabled })
 
   return (
     <Container>
-      <PaginationInfo>
-        Showing <PaginationInfoSpan>{page}</PaginationInfoSpan> to <PaginationInfoSpan>{max}</PaginationInfoSpan> of{' '}
-        <PaginationInfoSpan>{total}</PaginationInfoSpan> results
-      </PaginationInfo>
+      <PaginationInfoBasic>{currentPage}/{maxPages} - {totalResults} results</PaginationInfoBasic>
+      <PaginationInfoDetailed>
+        Showing <PaginationInfoSpan>{currentPage}</PaginationInfoSpan> to <PaginationInfoSpan>{maxPages}</PaginationInfoSpan> of{' '}
+        <PaginationInfoSpan>{totalResults}</PaginationInfoSpan> results
+      </PaginationInfoDetailed>
       <Navigation data-cy='pagination-navigation' aria-label='Pagination'>
         <NavigationButton
           data-cy='prev-btn'
           title='Previous'
           tw='rounded-l-md'
-          onClick={() => !isDisabled && setPage(page > 1 ? page - 1 : page)}
+          onClick={() => !isDisabled && setPage(currentPage > 1 ? currentPage - 1 : currentPage)}
         >
           <ChevronLeftIcon tw='h-5 w-5' aria-hidden='true' />
         </NavigationButton>
-        {getPaginationButtons()}
+        <PageButtonsContainer>
+          {paginationButtons}
+        </PageButtonsContainer>
         <NavigationButton
           data-cy='next-btn'
           title='Next'
           tw='rounded-r-md'
-          onClick={() => !isDisabled && setPage(page < max ? page + 1 : page)}
+          onClick={() => !isDisabled && setPage(currentPage < maxPages ? currentPage + 1 : currentPage)}
         >
           <ChevronRightIcon tw='h-5 w-5' aria-hidden='true' />
         </NavigationButton>
@@ -68,17 +39,24 @@ export default function Pagination({ total, max, page, isDisabled, setPage }: IP
 }
 
 const Container = tw.div`
+  flex
   px-4
   py-3
-  sm:flex
-  sm:flex-1
-  sm:items-center
-  sm:justify-between
+  justify-between
+  items-center
 `
 
-const PaginationInfo = tw.p`
+const PaginationInfoBasic = tw.p`
   text-sm
   text-primary-color
+  lg:hidden
+`
+
+const PaginationInfoDetailed = tw.p`
+  hidden
+  text-sm
+  text-primary-color
+  lg:block
 `
 
 const PaginationInfoSpan = tw.span`
@@ -91,6 +69,11 @@ const Navigation = tw.nav`
   -space-x-px
   rounded-md
   shadow-sm
+`
+
+const PageButtonsContainer = tw.div`
+  hidden
+  lg:block
 `
 
 const NavigationButton = tw.button`
@@ -124,7 +107,7 @@ const PageButton = styled.button<IPageButton>(({ $current }) => [
     focus:z-20
     focus:outline-offset-0
   `,
-  $current === 'true' && tw`
+  $current && tw`
     z-10
     text-secondary-color
     bg-teal-700

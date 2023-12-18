@@ -1,7 +1,14 @@
-# Pokedex
-Basic app for pokemon stats
+# Pokedex frontend project
 
-## Credentials
+## Development technologies
+- Next
+- TypeScript
+- Zustand
+- Tailwind
+- Styled-Components
+- Twin
 
-- Email: test@email.com
-- Password: SuperSecretPassword!
+## Testing technologies
+- Jest
+- React Testing Library
+- Cypress

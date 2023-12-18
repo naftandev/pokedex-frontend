@@ -1,13 +1,12 @@
 export interface ITrainerData {
-  id: number
+  _id: string
   email: string
-  password: string
   avatar: string
   name: string
   lastname: string
   gender: TTrainerGender
   region: string
-  town: string
+  city: string
   captured: number
 }
 

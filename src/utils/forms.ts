@@ -1,7 +1,4 @@
-export const isExists = (value: string) => {
-  if (!value) return false
-  return true
-}
+export const isExists = (value: string) => !value ? false : true
 
 export const isEmail = (value: string) => {
   // eslint-disable-next-line no-useless-escape

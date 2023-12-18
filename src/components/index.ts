@@ -1,3 +1,4 @@
+import SignupForm from './SignupForm'
 import LoginForm from './LoginForm'
 import TextInput from './TextInput'
 import Button from './Button'
@@ -9,6 +10,6 @@ import Pagination from './Pagination'
 import Spinner from './Spinner'
 
 export {
-  LoginForm, TextInput, Button, Logo, Header,
-  AvatarMenu, PokemonCard, Pagination, Spinner
+  SignupForm, LoginForm, TextInput, Button, Logo,
+  Header, AvatarMenu, PokemonCard, Pagination, Spinner
 }

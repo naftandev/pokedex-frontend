@@ -7,6 +7,7 @@ const user = userEvent.setup()
 
 const mockedOnChange = jest.fn()
 const mockedData = {
+  name: 'test',
   placeholder: 'Test placeholder',
   onChange: mockedOnChange
 }
@@ -14,6 +15,7 @@ const mockedData = {
 const renderTextInput = (type: TTextInputType, value: string, errorMsg?: string) => render(
   <TextInput
     type={type}
+    name={mockedData.name}
     placeholder={mockedData.placeholder}
     value={value}
     errorMsg={errorMsg}

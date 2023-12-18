@@ -15,7 +15,7 @@ export default function AvatarMenu({ name, avatar, options }: IAvatarMenuProps) 
   return (
     <Container>
       <AvatarContainer data-cy='avatar' role='button' onClick={toggleMenu}>
-        <Avatar src={avatar} alt={name} />
+        <Avatar src={avatar || '/images/avatars/default-silhouette.png'} alt={name} />
       </AvatarContainer>
       {options.length && isOpenMenu ? (
         <Menu role='menu' data-cy='avatar-menu'>
@@ -46,6 +46,7 @@ const Avatar = tw.img`
   border-2
   border-solid
   cursor-pointer
+  bg-secondary-color
 `
 
 const Menu = tw.ul`

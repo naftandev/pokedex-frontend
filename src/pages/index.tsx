@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import tw from 'twin.macro'
 import { Logo, Button } from '@components'
@@ -7,6 +8,9 @@ export default function Home() {
 
   return (
     <Container>
+      <Head>
+        <title>Pokedex | Home</title>
+      </Head>
       <ImageContainer>
         <Image src='/images/login-wallpaper.webp' alt='Pokemon landscape' />
       </ImageContainer>
@@ -22,13 +26,15 @@ const Container = tw.div`
   w-screen
   h-screen
   grid
-  grid-cols-3
+  grid-cols-1
+  md:grid-cols-3
 `
 
 const ImageContainer = tw.figure`
-  flex
+  hidden
   col-start-1
   col-end-3
+  md:flex
 `
 
 const Image = tw.img`
@@ -39,8 +45,8 @@ const Image = tw.img`
 const SideContainer = tw.div`
   w-full
   h-full
-  col-start-3
-  col-end-4
+  col-start-1
+  col-end-2
   flex
   flex-col
   gap-5
@@ -48,4 +54,6 @@ const SideContainer = tw.div`
   justify-center
   px-10
   bg-secondary-color
+  md:col-start-3
+  md:col-end-4
 `
